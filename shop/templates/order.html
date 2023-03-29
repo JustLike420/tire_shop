@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <main>
+        <div class="container">
+            <div class="table-responsive">
+                <h2>Сводка по заказу</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Кол-вао</th>
+                        <th scope="col">Цена</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_item in object.items.all %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ order_item.product.name }}</td>
+                            <td>
+                                <a href="{% url 'remove_single_item_from_cart' order_item.product.pk %}">-</a>
+                                {{ order_item.quantity }}
+                                <a href="{% url 'add_to_cart' order_item.product.pk %}">+</a>
+                            </td>
+
+                            <td>{{ order_item.item.price }} рублей</td>
+                            <td><a style="'color: red'"
+                                   href="{% url 'remove_from_cart' order_item.product.pk %}">x</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Ваша корзина пуста.</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-warning float-right ml-2" href="/">Продолжить
+                                    покупки</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if object.get_total %}
+                        <tr>
+                            <td colspan="2"><b>Общая цена:</b></td>
+                            <td><b>{{ object.get_total }} рублей.</b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-warning float-right ml-2" href="/">Продолжить
+                                    покупки</a>
+                                <a class="btn btn-primary float-right" href="/checkout/">Перейти к
+                                    оформлению заказа</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

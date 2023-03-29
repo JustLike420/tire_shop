@@ -1,0 +1,35 @@
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="{% url 'product_list' %}" class="nav-link px-2 ">Список товаров</a></li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'order' %}" class="nav-link px-2">Корзина</a></li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <li><a href="{% url 'product_create' %}" class="nav-link px-2">Добавить</a></li>
+            {% endif %}
+        </ul>
+
+        <div class="col-md-3 text-end">
+            {% if request.user.is_authenticated %}
+                Привет, {{ user.username }}
+                <a href="{% url 'logout' %}">
+                    <button type="button" class="btn btn-outline-primary me-2">Выход</button>
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}"><button class="btn btn-outline-primary">Вход</button></a>
+                <a href="{% url 'register' %}">
+                    <button type="button" class="btn btn-primary">Регистрация</button>
+                </a>
+            {% endif %}
+        </div>
+    </header>
+</div>

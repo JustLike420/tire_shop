@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <img class="card-img img-fluid" src="{{ product.picture.url }}"
+                         alt="Card image cap" id="product-detail">
+                </div>
+            </div>
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2">{{ product.name }}</h1>
+                        <p class="h3 py-2">{{ product.price }} р.</p>
+                        <p class="py-2">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                            <span class="list-inline-item text-dark">{{ product.created_at|date:"d M Y" }}</span>
+                        </p>
+                        <h6>Описание:</h6>
+                        <p>{{ product.description }}</p>
+                        <input type="hidden" name="product-title" value="Activewear">
+                        {% if request.user.is_authenticated %}
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <a href="{{ product.get_add_to_cart_url }}"
+                                       class="btn btn-success btn-lg">Добавить в корзину
+                                    </a>
+                                </div>
+                                <div class="col d-grid">
+                                    <a href="{{ product.get_remove_from_cart_url }}"
+                                       class="btn btn-danger btn-lg">
+                                        Убрать из корзины
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if request.user.is_superuser %}
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <a href="{% url 'product_update' product.pk %}"
+                                       class="btn btn-success btn-lg">Изменить
+                                    </a>
+                                </div>
+                                <div class="col d-grid">
+                                    <a href="{% url 'product_delete' product.pk %}"
+                                       class="btn btn-danger btn-lg">
+                                        Удалить
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
